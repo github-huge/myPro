@@ -1,0 +1,91 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="author" content="范珍">
+        <title>编辑器</title>
+        <style>
+            button{
+                padding:5px;
+                margin:15px;
+            }
+            article{
+                width:500px;
+                height:300px;
+                border:solid 1px gray;
+            }
+        </style>
+    </head>
+    <body>
+        <button data-cmd="formatBlock" data-value="<H1>">H1</button>
+        <button data-cmd="formatBlock" data-value="<H2>">H2</button>
+        <button data-cmd="formatBlock" data-value="<H3>">H3</button>
+        <button data-cmd="formatBlock" data-value="<p>">p</button>
+        <button data-cmd="foreColor" data-value="red">红字</button>
+        <button data-cmd="backColor" data-value="yellow">黄背景色</button>
+        <button data-cmd="bold">加粗</button>
+        <!--contenteditable:内容可以编辑-->
+        <article contenteditable>
+            这是一段文档就离开过爱好多个接口来发挥干活了圣诞节疯狂
+        </article>
+        <script>
+            var btns = document.querySelectorAll('button')
+            for(var i = 0 ;i <7; i++){
+                btns[i].onclick = function(ev){
+                    var cmd = ev.target.dataset.cmd
+                    var value = ev.target.dataset.value
+                    console.log(cmd)
+                    console.log(value)
+                    document.execCommand(cmd,false,value)
+                }
+            }
+
+            btns[0].onclick = function(){
+                console.log('H1被点击了')
+            }
+
+            btns[6].onclick = function(){
+                console.log('加粗')
+                // 内容可编辑的文档执行一个命令
+                // para1：命令名称
+                // para2:是否显示用户界面;无效果
+                // para3：执行命令需要的参数，没有就写null
+
+                // 效果：选中区域加粗
+                document.execCommand('bold',false,null)
+            }
+
+            btns[5].onclick = function(){
+                // para3:执行命令需要的参数
+                // 颜色值：yellow、#333333、rgb(,,)
+                document.execCommand('backColor',false,'yellow')
+            }
+            btns[4].onclick = function(){
+
+                // document:文档
+                // execute:执行 
+                // command：命令；
+               
+                document.execCommand('foreColor',false,'red')
+            }
+
+            btns[3].onclick = function(){
+                document.execCommand('formatBlock',false,'<p>')
+            }
+
+            btns[2].onclick = function(){
+                document.execCommand('formatBlock',false,'<H3>')
+            }
+
+            btns[1].onclick = function(){
+                //对包含选中区域的整个段添加块级html标签 
+                document.execCommand('formatBlock',false,'<H2>')
+            }
+
+            btns[0].onclick = function(){
+                document.execCommand('formatBlock',false,'<H1>')
+            }
+// https://developer.mozilla.org/en-US/docs/Web/API/Document/execCommand
+        </script>
+
+    </body>
+</html>

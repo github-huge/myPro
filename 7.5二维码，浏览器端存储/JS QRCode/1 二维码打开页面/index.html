@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>qrcode</title>
+    </head>
+    <body>
+        <script src="js/jquery.js"></script>
+        <script type="text/javascript" src="js/jquery.qrcode.js"></script>
+        <!--jquery.qrcode.js 是把它用jquery方式封装起来的，用它来实现图形渲染，其实就是画图（支持canvas和table两种方式）-->
+        <script type="text/javascript" src="js/qrcode.js"></script>
+        <!--qrcode.js 是实现二维码数据计算的核心类-->
+       
+        <p>扫描后显示文字</p>
+        <div id="qrcode"></div>
+
+        <p>扫描跳转到百度</p>
+        <div id="qrcodeTable"></div>
+
+        <p>扫描跳转到电子名片</p>
+        <div id="qrcodeCanvas"></div>
+
+        <p>改变了尺寸的二维码</p>
+        <div id="size"></div>
+        <script>
+            $('#qrcode').qrcode(utf16to8("我是用jquery.qrcode.js创建的二维码"))
+            // 扫描二维码后，括号内的文字会显示在页面上
+           
+           
+           
+           
+            $('#qrcodeTable').qrcode({
+                render	: "canvas",
+                // 设置渲染方式
+                // 使用canvas方式渲染性能还是非常不错的，但是如果用table方式，性能不太理想，
+                // 特别是IE9以下的浏览器，所以需要自行优化一下渲染table的方式
+                text	: "http://www.baidu.com"
+                // 设置二维码内容
+            })
+            $('#qrcodeCanvas').qrcode({
+                render	: "table",
+                text	: "http://www.zhiyou100.com"
+            })
+            $('#size').qrcode({
+                width: 64,
+                // 设置宽度
+                height: 64,
+                // 设置高度
+                typeNumber: -1,
+                // 计算模式
+                correctLevel: QRErrorCorrectLevel.H,
+                //纠错等级  
+                background: "red",
+                //背景颜色  
+                foreground: "blue",
+                //前景颜色
+                text: utf16to8("我的尺寸是 64*64")
+            })
+
+            // 可以解决 qrcode 扫描结果中，中文乱码问题
+            function utf16to8(str) {
+                var out, i, c
+                out = ""
+                for (i = 0; i < str.length; i++) {
+                    c = str.charCodeAt(i)
+                    if ((c >= 0x0001) && (c <= 0x007F)) {
+                        out += str.charAt(i)
+                    } else if (c > 0x07FF) {
+                        out += String.fromCharCode(0xE0 | ((c >> 12) & 0x0F))
+                        out += String.fromCharCode(0x80 | ((c >> 6) & 0x3F))
+                        out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F))
+                    } else {
+                        out += String.fromCharCode(0xC0 | ((c >> 6) & 0x1F))
+                        out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F))
+                    }
+                }
+                return out
+            }
+        </script>
+    </body>
+</html>
+
+<!--
+    什么是QRCode？
+        Quick Response Code 二维码
+        是用某种特定的几何图形按一定规律在平面（二维方向上）分布的黑白相间的图形记录数据符号信息的
+        优点：
+            1、存储大容量信息
+                传统的条形码只能处理20位左右的信息量，与此相比，QR码可处理条形码的几十倍到几百倍的信息量。
+                另外，QR码还可以支持所有类型的数据。（如：数字、英文字母、日文字母、汉字、符号、二进制、控制码等）。
+                一个QR码最多可以处理7089字(仅用数字时)的巨大信息量。
+            2、在小空间内打印
+                QR码使用纵向和横向两个方向处理数据，如果是相同的信息量，QR码所占空间为条形码的十分之一左右。
+                (还支持Micro QR码，可以在更小空间内处理数据。)
+            3、可以有效地处理各种文字
+                QR码是日本国产的二维码，因此非常适合处理日文字母和汉字。QR码字集规格定义是按照日本标准“JIS第一级和第二级的汉字”
+                制定的，因此在日语处理方面，每一个全角字母和汉字都用13比特的数据处理，效率较高，与其他二维码相比，可以多存储20%
+                以上的信息。
+            4、对变脏和破损的适应能力强
+                QR码具备“纠错功能”，即使部分编码变脏或破损，也可以恢复数据。数据恢复以码字为单位※1，最多可以纠错约30%※2。
+            5、可以从360°任一方向读取
+                QR码从360°任一方向均可快速读取。其奥秘就在于QR码中的3处定位图案，可以帮助QR码不受背景样式的影响，实现快速稳定的读取。
+            6、支持数据合并功能
+                QR码可以将数据分割为多个编码，最多支持16个QR码。使用这一功能，还可以在狭长区域内打印QR码。
+                另外，也可以把多个分割编码合并为单个数据。
+
+    QRCode的在当前生活和生产中的广泛应用（即功能）：
+        1、信息获取（名片、地图、WIFI密码、资料）
+        2、网站跳转（跳转到微博、手机网站、网站）
+        3、广告推送（用户扫码，直接浏览商家推送的视频、音频广告）
+        4、手机电商（用户扫码、手机直接购物下单）
+        5、防伪溯源（用户扫码、即可查看生产地；同时后台可以获取最终消费地)
+        6、优惠促销（用户扫码，下载电子优惠券，抽奖）
+        7、会员管理（用户手机上获取电子会员信息、VIP服务）
+        8、手机支付（扫描商品二维码，通过银行或第三方支付提供的手机端通道完成支付）
+
+    QRCode的产生的时代背景和QRCode的成功之路
+        进入上个世纪60年代之后，日本迎来的高速增长期，经销食品、衣料等种类繁多的商品的超市开始在城市中出现。
+        当时超市使用的现金出纳机要靠手动输入商品价格，因此负责现金出纳的人常常会因手腕的麻木和“腱鞘炎”而苦恼。
+        “能否减轻超市收款员的负担呢？”
+        研发项目启动后经过一年半的时间，在经历了几多曲折之后，可容纳约7000个数字的QR码终于诞生了。
+        其特点是能进行汉字处理，大容量，而且读取速度比其他编码快10倍以上。
+        QR Code码是1994年由日本DW公司发明。QR来自英文「Quick Response」的缩写，即快速反应的意思，
+        源自发明者希望QR码可让其内容快速被解码。QR码最常见于日本、韩国；并为目前日本最流行的二维空
+        间条码。
+        QR码的普及还得益于另一要素，即：规格公开，使之成为人人都能自由使用的编码。
+
+    QRCode存储数据的基本原理（数据编码、冗余、防污损及覆盖小图片）
+        在代码编制上巧妙地利用构成计算机内部逻辑基础的“0”、“1”比特流的概念，使用若干个与二进制相对
+        应的几何形体来表示文字数值信息，通过图象输入设备或光电扫描设备自动识读以实现信息自动处理：
+        它具有条码技术的一些共性：每种码制有其特定的字符集；每个字符占有一定的宽度；具有一定的校验功能等。
+        同时还具有对不同行的信息自动识别功能、及处理图形旋转变化点。
+
+
+    JS生成QRCode的解决方案
+        jquery.qrcode.js 是一个方便纯浏览器生成二维码的 jQuery 插件，它允许你轻松的把二维码添加到你的网页上，
+        它是独立的，压缩后小于4k，没有图像下载，它不依靠时建时停的外部服务，或者添加延迟加载，它基于一个用各种语
+        言建立的库，jquery.qrcode.js把它包裹起来，方便你在自己的代码中使用。
+
+        使用：
+            1、导入jquery.qrcode.js 和 qrcode.js
+            2、创建一个用来包含生成的二维码图像的标签，比如div
+            3、然后在创建的容器中添加qrcode
+
+    qrcode 的缺点：默认不支持中文
+        这跟js的机制有关系，jquery-qrcode这个库是采用 charCodeAt() 这个方式进行编码转换的，
+        而这个方法默认会获取它的 Unicode 编码，一般的解码器都是采用UTF-8, ISO-8859-1等方式，
+        英文是没有问题，如果是中文，一般情况下Unicode是UTF-16实现，长度2位，而UTF-8编码是3位，
+        这样二维码的编解码就不匹配了。
+        解决方式当然是，在二维码编码前把字符串转换成UTF-8，具体代码如下：
+            function utf16to8(str) {  
+                var out, i, len, c  
+                out = ""  
+                len = str.length  
+                for(i = 0 i < len i++) {  
+                    c = str.charCodeAt(i)  
+                    if ((c >= 0x0001) && (c <= 0x007F)) {  
+                        out += str.charAt(i)  
+                    } else if (c > 0x07FF) {  
+                        out += String.fromCharCode(0xE0 | ((c >> 12) & 0x0F))  
+                        out += String.fromCharCode(0x80 | ((c >>  6) & 0x3F))  
+                        out += String.fromCharCode(0x80 | ((c >>  0) & 0x3F))  
+                    } else {  
+                        out += String.fromCharCode(0xC0 | ((c >>  6) & 0x1F))  
+                        out += String.fromCharCode(0x80 | ((c >>  0) & 0x3F))  
+                    }  
+                }  
+                return out  
+            }  
+-->
+
+
+<!--
+    扫描二维码
+    参考文档
+    http://www.tuicool.com/articles/auQJzq
+-->

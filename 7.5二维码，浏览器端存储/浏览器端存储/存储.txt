@@ -1,0 +1,7 @@
+存储
+服务端存储：fs\数据库
+浏览器存储：cookie、sessionStorage、localStorage；
+session：会话；
+storage：存储；
+local：本地；
+

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <title>立方体</title>
+   <meta name="viewport" content="width=device-width,initial-scalable=1,user-scalable=no">
+   <style>
+      html, body {
+         height: 100%;
+         margin: 0px;
+         /*径向渐变:成一个圆形扩散的形式把所填写的颜色过度出来*/
+         background: radial-gradient(60% 55%, deeppink 20%, gold 30%, lawngreen);
+      }
+      
+      body {
+         /*改body的布局展示样式为弹性布局
+         弹性布局:支持不同分辨率使用同一套代码*/
+         display: -webkit-box; /* OLD - iOS 6-, Safari 3.1-6 */
+         display: -moz-box; /* OLD - Firefox 19- (buggy but mostly works) */
+         display: -ms-flexbox; /* TWEENER - IE 10 */
+         display: -webkit-flex; /* NEW - Chrome */
+         display: flex; /* NEW, Spec - Opera 12.1, Firefox 20+ */
+         /*主轴对其方式*/
+         -webkit-box-pack: center;
+         -ms-flex-pack: center;
+         -webkit-justify-content: center;
+         justify-content: center;
+         -webkit-box-align: center;
+         -ms-flex-align: center;
+         -webkit-align-items: center;
+         align-items: center;
+         justify-content: space-between;
+         /*交叉轴对齐方式*/
+         align-items: center;
+         /*Ctrl+shift+m进入开发者模式*/
+         
+         perspective: 1500px;
+      }
+      
+      main {
+         margin: 0 auto;
+         width: 9rem;
+         height: 9rem;
+         /*切换成3d视角*/
+         transform-style: preserve-3d;
+         -webkit-transform-style:preserve-3d;
+         -moz-transform-style:preserve-3d;
+         -o-transform-style:preserve-3d;
+         /*时间 动画名称 匀速 重复*/
+          animation: 10s spin linear infinite;
+         -moz-animation: 10s spin linear infinite;
+         -webkit-animation: 10s spin linear infinite;
+         -o-animation: 10s spin linear infinite;
+      }
+      
+      main div {
+         position: absolute;
+         width: 100%;
+         height: 100%;
+         /*写一个值代表默认宽高都使用*/
+         background-size: 100%;
+         border: 1px solid white;
+      }
+      
+      /*旋转的动画*/
+      @keyframes spin {
+         0% {
+            -webkit-transform: rotateX(0deg) rotateZ(0deg) rotateY(0deg);
+         }
+         100% {
+            -webkit-transform: rotateX(360deg) rotateZ(360deg) rotateY(360deg);
+         }
+      }
+      
+      @-moz-keyframes spin {
+         0% {
+            -webkit-transform: rotateX(0deg) rotateZ(0deg) rotateY(0deg);
+         }
+         100% {
+            -webkit-transform: rotateX(360deg) rotateZ(360deg) rotateY(360deg);
+         }
+      }
+      
+      @-webkit-keyframes spin {
+         0% {
+            -webkit-transform: rotateX(0deg) rotateZ(0deg) rotateY(0deg);
+         }
+         100% {
+            -webkit-transform: rotateX(360deg) rotateZ(360deg) rotateY(360deg);
+         }
+      }
+      
+      @-o-keyframes spin {
+         0% {
+            -webkit-transform: rotateX(0deg) rotateZ(0deg) rotateY(0deg);
+         }
+         100% {
+            -webkit-transform: rotateX(360deg) rotateZ(360deg) rotateY(360deg);
+         }
+      }
+      
+      /*前面*/
+      .font {
+         background-image: url('img/01.jpg');
+         background-size: 100%;
+         /*在z轴上前进4.5rem  4.5rem正好是矩形一半的宽高*/
+         -webkit-transform: translateZ(4.5rem);
+      }
+      
+      /*后面*/
+      .back {
+         background-image: url('img/02.jpg');
+         background-size: 100%;
+         /*在z轴上前进4.5rem  4.5rem正好是矩形一半的宽高*/
+         -webkit-transform: translateZ(-4.5rem);
+      }
+      
+      .left {
+         background-image: url('img/03.jpg');
+         -webkit-transform: rotateY(90deg) translateZ(-4.5rem);
+         background-size: 100%;
+      }
+      
+      .right {
+         background-image: url('img/04.jpg');
+         background-size: 100%;
+         -webkit-transform: rotateY(-90deg) translateZ(-4.5rem);
+      }
+      
+      .top {
+         background-image: url('img/05.jpg');
+         background-size: 100%;
+         -webkit-transform: rotateX(90deg) translateZ(-4.5rem);
+      }
+      
+      .bottom {
+         background-image: url('img/06.jpg');
+         background-size: 100%;
+         -webkit-transform: rotateX(-90deg) translateZ(-4.5rem);
+      }
+   </style>
+</head>
+<body>
+<main>
+   <!--前-->
+   <div class="font"></div>
+   <!--后-->
+   <div class="back"></div>
+   <!--左-->
+   <div class="left"></div>
+   <!--右-->
+   <div class="right"></div>
+   <!--上-->
+   <div class="top"></div>
+   <!--下-->
+   <div class="bottom"></div>
+</main>
+</body>
+<script>
+  function resizeRoot() {
+    var deviceWidth = document.documentElement.clientWidth,
+        num = 750,
+        num1 = num / 100;
+    if (deviceWidth > num) {
+      deviceWidth = num;
+    }
+    document.documentElement.style.fontSize = deviceWidth / 20 + "px";
+  }
+  
+  //根节点HTML的字体大小初始化
+  resizeRoot();
+  window.onresize = function () {
+    resizeRoot();
+  };
+  $(function () {
+    window.onresize()
+  })
+</script>
+</html>
